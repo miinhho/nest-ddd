@@ -1,6 +1,6 @@
 import { BaseEntity } from '@/common/entity/base.entity';
 import { EntityMapper } from '@/common/entity/mapper';
-import { OrderItemEntity } from '@/order/entity/orm/order-item.orm-entity';
+import { OrderItemEntity } from '@/modules/order/entity/orm/order-item.orm-entity';
 import { v4 as uuidv4 } from 'uuid';
 
 export class OrderItem implements BaseEntity, EntityMapper {

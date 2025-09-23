@@ -1,5 +1,5 @@
 import { BaseRepository } from '@/common/repository/base.repository';
-import { OrderItem } from '@/order/entity/order-item.entity';
+import { OrderItem } from '@/modules/order/entity/order-item.entity';
 
 export abstract class OrderItemRepository implements BaseRepository<OrderItem> {
   abstract save(orderItem: OrderItem): void;

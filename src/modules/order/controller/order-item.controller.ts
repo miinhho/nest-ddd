@@ -1,17 +1,17 @@
 import {
   OrderItemCreateBodyDto,
   OrderItemCreateResponseDto,
-} from '@/order/dto/order-item.create.dto';
+} from '@/modules/order/dto/order-item.create.dto';
 import {
   OrderItemFindAllResponseDto,
   OrderItemFindOneResponseDto,
-} from '@/order/dto/order-item.find.dto';
+} from '@/modules/order/dto/order-item.find.dto';
 import {
   OrderItemUpdateDto,
   OrderItemUpdateResponseDto,
-} from '@/order/dto/order-item.update.dto';
-import { OrderItemRepository } from '@/order/repository/order-item.repository';
-import { OrderItemService } from '@/order/service/order-item.service';
+} from '@/modules/order/dto/order-item.update.dto';
+import { OrderItemRepository } from '@/modules/order/repository/order-item.repository';
+import { OrderItemService } from '@/modules/order/service/order-item.service';
 import {
   Body,
   Controller,

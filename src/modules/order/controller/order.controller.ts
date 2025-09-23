@@ -1,13 +1,19 @@
 import { APIStatusCode } from '@/common/status-code';
-import { OrderCreateBodyDto, OrderCreateResponseDto } from '@/order/dto/order.create.dto';
+import {
+  OrderCreateBodyDto,
+  OrderCreateResponseDto,
+} from '@/modules/order/dto/order.create.dto';
 import {
   OrderFindAllResponseDto,
   OrderFindOneResponseDto,
-} from '@/order/dto/order.find.dto';
-import { OrderCancelResponseDto, OrderPayResponseDto } from '@/order/dto/order.pay.dto';
-import { OrderItem } from '@/order/entity/order-item.entity';
-import { OrderRepository } from '@/order/repository/order.repository';
-import { OrderService } from '@/order/service/order.service';
+} from '@/modules/order/dto/order.find.dto';
+import {
+  OrderCancelResponseDto,
+  OrderPayResponseDto,
+} from '@/modules/order/dto/order.pay.dto';
+import { OrderItem } from '@/modules/order/entity/order-item.entity';
+import { OrderRepository } from '@/modules/order/repository/order.repository';
+import { OrderService } from '@/modules/order/service/order.service';
 import {
   Body,
   Controller,

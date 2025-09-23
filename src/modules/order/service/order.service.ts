@@ -1,6 +1,6 @@
-import { OrderItem } from '@/order/entity/order-item.entity';
-import { Order } from '@/order/entity/order.entity';
-import { OrderRepository } from '@/order/repository/order.repository';
+import { OrderItem } from '@/modules/order/entity/order-item.entity';
+import { Order } from '@/modules/order/entity/order.entity';
+import { OrderRepository } from '@/modules/order/repository/order.repository';
 import { Transactional } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 

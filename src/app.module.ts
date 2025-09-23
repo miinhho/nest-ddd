@@ -7,7 +7,7 @@ import { Module, OnModuleInit, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
 import serverConfig from './config/server.config';
-import { OrderModule } from './order/order.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [

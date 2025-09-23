@@ -1,7 +1,7 @@
-import { OrderItem } from '@/order/entity/order-item.entity';
-import { OrderItemEntity } from '@/order/entity/orm/order-item.orm-entity';
-import { OrderItemNotFoundError } from '@/order/error/order-item-not-found.error';
-import { OrderItemRepository } from '@/order/repository/order-item.repository';
+import { OrderItem } from '@/modules/order/entity/order-item.entity';
+import { OrderItemEntity } from '@/modules/order/entity/orm/order-item.orm-entity';
+import { OrderItemNotFoundError } from '@/modules/order/error/order-item-not-found.error';
+import { OrderItemRepository } from '@/modules/order/repository/order-item.repository';
 import { EntityManager, EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';

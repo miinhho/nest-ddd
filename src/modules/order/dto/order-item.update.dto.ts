@@ -1,4 +1,4 @@
-import { OrderItemDto } from '@/order/dto/order-item.dto';
+import { OrderItemDto } from '@/modules/order/dto/order-item.dto';
 import { IsInt, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class OrderItemUpdateDto {

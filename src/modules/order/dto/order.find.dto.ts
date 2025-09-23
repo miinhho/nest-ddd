@@ -1,5 +1,5 @@
-import { OrderItemDto } from '@/order/dto/order-item.dto';
-import { OrderStatus } from '@/order/entity/order.entity';
+import { OrderItemDto } from '@/modules/order/dto/order-item.dto';
+import { OrderStatus } from '@/modules/order/entity/order.entity';
 
 class OrderFindDto {
   id: string;

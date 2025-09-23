@@ -1,10 +1,10 @@
 import { BaseEntity } from '@/common/entity/base.entity';
 import { EntityMapper } from '@/common/entity/mapper';
-import { OrderItem } from '@/order/entity/order-item.entity';
-import { OrderEntity } from '@/order/entity/orm/order.orm-entity';
-import { OrderCancelLateError } from '@/order/error/order-cancel-late.error';
-import { OrderInPendingError } from '@/order/error/order-in-pending.error';
-import { OrderNoItemsError } from '@/order/error/order-no-items.error';
+import { OrderItem } from '@/modules/order/entity/order-item.entity';
+import { OrderEntity } from '@/modules/order/entity/orm/order.orm-entity';
+import { OrderCancelLateError } from '@/modules/order/error/order-cancel-late.error';
+import { OrderInPendingError } from '@/modules/order/error/order-in-pending.error';
+import { OrderNoItemsError } from '@/modules/order/error/order-no-items.error';
 import { v4 as uuidv4 } from 'uuid';
 
 export enum OrderStatus {

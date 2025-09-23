@@ -1,4 +1,4 @@
-import { OrderStatus } from '@/order/entity/order.entity';
+import { OrderStatus } from '@/modules/order/entity/order.entity';
 import { IsInt, IsNumber, IsString, ValidateNested } from 'class-validator';
 
 class OrderItemDto {
