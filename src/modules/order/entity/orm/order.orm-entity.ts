@@ -1,6 +1,7 @@
 import { BaseOrmEntity } from '@/common/entity/base.entity';
 import { DomainMapper } from '@/common/entity/mapper';
-import { Order, OrderStatus } from '@/modules/order/entity/order.entity';
+import { Order } from '@/modules/order/entity/order.entity';
+import { OrderStatus } from '@/modules/order/entity/order.vo';
 import { OrderItemEntity } from '@/modules/order/entity/orm/order-item.orm-entity';
 import { Cascade, Collection, Entity, Enum, OneToMany } from '@mikro-orm/core';
 

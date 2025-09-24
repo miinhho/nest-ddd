@@ -1,9 +1,7 @@
 import { BaseRepository } from '@/common/repository/base.repository';
 import { Order } from '@/modules/order/entity/order.entity';
 
-export abstract class OrderRepository implements BaseRepository<Order> {
-  abstract save(order: Order): void;
+export abstract class OrderRepository extends BaseRepository<Order> {
   abstract findById(id: string): Promise<Order>;
   abstract findAll(): Promise<Order[]>;
-  abstract delete(id: string): Promise<void>;
 }

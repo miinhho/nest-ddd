@@ -1,19 +1,12 @@
 import { BaseEntity } from '@/common/entity/base.entity';
 import { EntityMapper } from '@/common/entity/mapper';
 import { OrderItem } from '@/modules/order/entity/order-item.entity';
+import { OrderStatus } from '@/modules/order/entity/order.vo';
 import { OrderEntity } from '@/modules/order/entity/orm/order.orm-entity';
-import { OrderCancelLateError } from '@/modules/order/error/order-cancel-late.error';
-import { OrderInPendingError } from '@/modules/order/error/order-in-pending.error';
-import { OrderNoItemsError } from '@/modules/order/error/order-no-items.error';
+import { OrderCancelLateError } from '@/modules/order/error/order.cancel-late.error';
+import { OrderInPendingError } from '@/modules/order/error/order.in-pending.error';
+import { OrderNoItemsError } from '@/modules/order/error/order.no-items.error';
 import { v4 as uuidv4 } from 'uuid';
-
-export enum OrderStatus {
-  Pending = 'pending',
-  Paid = 'paid',
-  Shipped = 'shipped',
-  Delivered = 'delivered',
-  Canceled = 'canceled',
-}
 
 export class Order implements BaseEntity, EntityMapper {
   readonly id: string;
@@ -45,13 +38,15 @@ export class Order implements BaseEntity, EntityMapper {
     const orderEntity = new OrderEntity();
     orderEntity.id = this.id;
     orderEntity.createdAt = this.createdAt;
-    orderEntity.status = this.getStatus();
+    orderEntity.status = this.status;
     orderEntity.items.set(this.items.map((item) => item.toEntity()));
     return orderEntity;
   }
 
   addItem(item: OrderItem): void {
-    const index = this.items.findIndex((i) => i.id === item.id && i.price === item.price);
+    const index = this.items.findIndex(
+      (i) => i.id === item.id && i.getPrice() === item.getPrice(),
+    );
     if (index === -1) {
       this.items.push(item);
       return;
@@ -60,13 +55,13 @@ export class Order implements BaseEntity, EntityMapper {
     const existing = this.items[index];
     const newOrderItem = OrderItem.create({
       name: existing.name,
-      quantity: existing.quantity + item.quantity,
-      price: existing.price,
+      quantity: existing.getQuantity() + item.getQuantity(),
+      price: existing.getPrice(),
     });
     this.items[index] = newOrderItem;
   }
 
-  total(): number {
+  getTotalPrice(): number {
     return this.items.reduce((sum, item) => sum + item.getTotalPrice(), 0);
   }
 

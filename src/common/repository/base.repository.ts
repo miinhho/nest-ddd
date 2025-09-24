@@ -1,4 +1,4 @@
-export interface BaseRepository<T> {
-  save(entity: T): void;
-  delete(id: string): Promise<void>;
+export abstract class BaseRepository<T> {
+  abstract save(entity: T): void;
+  abstract delete(id: string): Promise<void>;
 }

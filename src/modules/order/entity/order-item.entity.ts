@@ -1,13 +1,14 @@
 import { BaseEntity } from '@/common/entity/base.entity';
 import { EntityMapper } from '@/common/entity/mapper';
+import { OrderItemPrice, OrderItemQuantity } from '@/modules/order/entity/order-item.vo';
 import { OrderItemEntity } from '@/modules/order/entity/orm/order-item.orm-entity';
 import { v4 as uuidv4 } from 'uuid';
 
 export class OrderItem implements BaseEntity, EntityMapper {
   readonly id: string;
   readonly name: string;
-  readonly quantity: number;
-  readonly price: number;
+  private quantity: OrderItemQuantity;
+  private price: OrderItemPrice;
   readonly createdAt: Date = new Date();
 
   constructor({
@@ -25,8 +26,8 @@ export class OrderItem implements BaseEntity, EntityMapper {
   }) {
     this.id = id ?? uuidv4();
     this.name = name;
-    this.quantity = quantity;
-    this.price = price;
+    this.quantity = new OrderItemQuantity(quantity);
+    this.price = new OrderItemPrice(price);
     this.createdAt = createdAt ?? new Date();
   }
 
@@ -50,22 +51,30 @@ export class OrderItem implements BaseEntity, EntityMapper {
     const orderItemEntity = new OrderItemEntity();
     orderItemEntity.id = this.id;
     orderItemEntity.name = this.name;
-    orderItemEntity.quantity = this.quantity;
-    orderItemEntity.price = this.price.toString();
+    orderItemEntity.quantity = this.quantity.getQuantity();
+    orderItemEntity.price = this.price.getPrice().toString();
     orderItemEntity.createdAt = this.createdAt;
     return orderItemEntity;
   }
 
+  getQuantity(): number {
+    return this.quantity.getQuantity();
+  }
+
+  getPrice(): number {
+    return this.price.getPrice();
+  }
+
   getTotalPrice(): number {
-    return this.quantity * this.price;
+    return this.quantity.getQuantity() * this.price.getPrice();
   }
 
   update(updates: Partial<{ name: string; quantity: number; price: number }>): OrderItem {
     return new OrderItem({
       id: this.id,
       name: updates.name ?? this.name,
-      quantity: updates.quantity ?? this.quantity,
-      price: updates.price ?? this.price,
+      quantity: updates.quantity ?? this.quantity.getQuantity(),
+      price: updates.price ?? this.price.getPrice(),
       createdAt: this.createdAt,
     });
   }
