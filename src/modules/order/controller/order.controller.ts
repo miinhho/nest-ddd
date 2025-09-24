@@ -42,8 +42,8 @@ export class OrderController {
     const order = await this.orderService.createOrder(items);
     return {
       id: order.id,
-      status: order.getStatus(),
-      total: order.total(),
+      status: order.status,
+      total: order.totalPrice,
     };
   }
 
@@ -53,9 +53,9 @@ export class OrderController {
     const order = await this.orderRepository.findById(id);
     return {
       id: order.id,
-      status: order.getStatus(),
-      total: order.total(),
-      items: order.getItems(),
+      status: order.status,
+      total: order.totalPrice,
+      items: order.items,
     };
   }
 
@@ -65,8 +65,8 @@ export class OrderController {
     const orders = await this.orderRepository.findAll();
     return orders.map((order) => ({
       id: order.id,
-      status: order.getStatus(),
-      total: order.total(),
+      status: order.status,
+      total: order.totalPrice,
     }));
   }
 

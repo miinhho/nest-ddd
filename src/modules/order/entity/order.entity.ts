@@ -6,12 +6,12 @@ import { OrderEntity } from '@/modules/order/entity/orm/order.orm-entity';
 import { OrderCancelLateError } from '@/modules/order/error/order.cancel-late.error';
 import { OrderInPendingError } from '@/modules/order/error/order.in-pending.error';
 import { OrderNoItemsError } from '@/modules/order/error/order.no-items.error';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 
 export class Order implements BaseEntity, EntityMapper {
   readonly id: string;
-  private items: OrderItem[] = [];
-  private status: OrderStatus = OrderStatus.Pending;
+  private _items: OrderItem[] = [];
+  private _status: OrderStatus = OrderStatus.Pending;
   readonly createdAt: Date = new Date();
 
   constructor({
@@ -23,8 +23,8 @@ export class Order implements BaseEntity, EntityMapper {
     status?: OrderStatus;
     createdAt?: Date;
   } = {}) {
-    this.id = id ?? uuidv4();
-    this.status = status ?? OrderStatus.Pending;
+    this.id = id ?? randomUUID();
+    this._status = status ?? OrderStatus.Pending;
     this.createdAt = createdAt ?? new Date();
   }
 
@@ -38,55 +38,55 @@ export class Order implements BaseEntity, EntityMapper {
     const orderEntity = new OrderEntity();
     orderEntity.id = this.id;
     orderEntity.createdAt = this.createdAt;
-    orderEntity.status = this.status;
-    orderEntity.items.set(this.items.map((item) => item.toEntity()));
+    orderEntity.status = this._status;
+    orderEntity.items.set(this._items.map((item) => item.toEntity()));
     return orderEntity;
   }
 
   addItem(item: OrderItem): void {
-    const index = this.items.findIndex(
-      (i) => i.id === item.id && i.getPrice() === item.getPrice(),
+    const index = this._items.findIndex(
+      (i) => i.name === item.name && i.price === item.price,
     );
     if (index === -1) {
-      this.items.push(item);
+      this._items.push(item);
       return;
     }
 
-    const existing = this.items[index];
+    const existing = this._items[index];
     const newOrderItem = OrderItem.create({
       name: existing.name,
-      quantity: existing.getQuantity() + item.getQuantity(),
-      price: existing.getPrice(),
+      quantity: existing.quantity + item.quantity,
+      price: existing.price,
     });
-    this.items[index] = newOrderItem;
+    this._items[index] = newOrderItem;
   }
 
-  getTotalPrice(): number {
-    return this.items.reduce((sum, item) => sum + item.getTotalPrice(), 0);
+  get items(): OrderItem[] {
+    return [...this._items];
+  }
+
+  get status(): OrderStatus {
+    return this._status;
+  }
+
+  get totalPrice(): number {
+    return this._items.reduce((sum, item) => sum + item.totalPrice, 0);
   }
 
   pay(): void {
-    if (this.status !== OrderStatus.Pending) {
+    if (this._status !== OrderStatus.Pending) {
       throw new OrderInPendingError(this.id);
     }
-    if (this.items.length === 0) {
+    if (this._items.length === 0) {
       throw new OrderNoItemsError(this.id);
     }
-    this.status = OrderStatus.Paid;
+    this._status = OrderStatus.Paid;
   }
 
   cancel(): void {
-    if (this.status === OrderStatus.Shipped || this.status === OrderStatus.Delivered) {
+    if (this._status === OrderStatus.Shipped || this._status === OrderStatus.Delivered) {
       throw new OrderCancelLateError(this.id);
     }
-    this.status = OrderStatus.Canceled;
-  }
-
-  getItems(): OrderItem[] {
-    return [...this.items];
-  }
-
-  getStatus(): OrderStatus {
-    return this.status;
+    this._status = OrderStatus.Canceled;
   }
 }

@@ -2,13 +2,13 @@ import { BaseEntity } from '@/common/entity/base.entity';
 import { EntityMapper } from '@/common/entity/mapper';
 import { OrderItemPrice, OrderItemQuantity } from '@/modules/order/entity/order-item.vo';
 import { OrderItemEntity } from '@/modules/order/entity/orm/order-item.orm-entity';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 
 export class OrderItem implements BaseEntity, EntityMapper {
   readonly id: string;
   readonly name: string;
-  private quantity: OrderItemQuantity;
-  private price: OrderItemPrice;
+  private _quantity: OrderItemQuantity;
+  private _price: OrderItemPrice;
   readonly createdAt: Date = new Date();
 
   constructor({
@@ -24,10 +24,10 @@ export class OrderItem implements BaseEntity, EntityMapper {
     price: number;
     createdAt?: Date;
   }) {
-    this.id = id ?? uuidv4();
+    this.id = id ?? randomUUID();
     this.name = name;
-    this.quantity = new OrderItemQuantity(quantity);
-    this.price = new OrderItemPrice(price);
+    this._quantity = new OrderItemQuantity(quantity);
+    this._price = new OrderItemPrice(price);
     this.createdAt = createdAt ?? new Date();
   }
 
@@ -51,30 +51,30 @@ export class OrderItem implements BaseEntity, EntityMapper {
     const orderItemEntity = new OrderItemEntity();
     orderItemEntity.id = this.id;
     orderItemEntity.name = this.name;
-    orderItemEntity.quantity = this.quantity.getQuantity();
-    orderItemEntity.price = this.price.getPrice().toString();
+    orderItemEntity.quantity = this._quantity.getQuantity();
+    orderItemEntity.price = this._price.getPrice().toString();
     orderItemEntity.createdAt = this.createdAt;
     return orderItemEntity;
   }
 
-  getQuantity(): number {
-    return this.quantity.getQuantity();
+  get quantity(): number {
+    return this._quantity.getQuantity();
   }
 
-  getPrice(): number {
-    return this.price.getPrice();
+  get price(): number {
+    return this._price.getPrice();
   }
 
-  getTotalPrice(): number {
-    return this.quantity.getQuantity() * this.price.getPrice();
+  get totalPrice(): number {
+    return this._quantity.getQuantity() * this._price.getPrice();
   }
 
   update(updates: Partial<{ name: string; quantity: number; price: number }>): OrderItem {
     return new OrderItem({
       id: this.id,
       name: updates.name ?? this.name,
-      quantity: updates.quantity ?? this.quantity.getQuantity(),
-      price: updates.price ?? this.price.getPrice(),
+      quantity: updates.quantity ?? this._quantity.getQuantity(),
+      price: updates.price ?? this._price.getPrice(),
       createdAt: this.createdAt,
     });
   }
