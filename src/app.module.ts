@@ -1,11 +1,9 @@
-import { Migrator } from '@mikro-orm/migrations';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
-import { SeedManager } from '@mikro-orm/seeder';
-import { MikroORM, SqliteDriver } from '@mikro-orm/sqlite';
+import { MikroORM } from '@mikro-orm/sqlite';
 import { Module, OnModuleInit, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
+import mikroOrmConfig from '../mikro-orm.config';
 import serverConfig from './config/server.config';
 import { OrderModule } from './modules/order/order.module';
 
@@ -15,14 +13,7 @@ import { OrderModule } from './modules/order/order.module';
       envFilePath: `.env`,
       load: [serverConfig],
     }),
-    MikroOrmModule.forRoot({
-      dbName: 'database.db',
-      metadataProvider: TsMorphMetadataProvider,
-      extensions: [Migrator, SeedManager],
-      debug: process.env.NODE_ENV !== 'production',
-      driver: SqliteDriver,
-      autoLoadEntities: true,
-    }),
+    MikroOrmModule.forRoot(mikroOrmConfig),
     OrderModule,
   ],
   providers: [

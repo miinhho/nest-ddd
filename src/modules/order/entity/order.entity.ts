@@ -18,14 +18,17 @@ export class Order implements BaseEntity, EntityMapper {
     id,
     status,
     createdAt,
+    items,
   }: {
     id?: string;
     status?: OrderStatus;
     createdAt?: Date;
+    items?: OrderItem[];
   } = {}) {
     this.id = id ?? randomUUID();
     this._status = status ?? OrderStatus.Pending;
     this.createdAt = createdAt ?? new Date();
+    this._items = items ?? [];
   }
 
   static create(items: OrderItem[]): Order {
@@ -39,7 +42,8 @@ export class Order implements BaseEntity, EntityMapper {
     orderEntity.id = this.id;
     orderEntity.createdAt = this.createdAt;
     orderEntity.status = this._status;
-    orderEntity.items.set(this._items.map((item) => item.toEntity()));
+    const itemEntities = this._items.map((item) => item.toEntity());
+    orderEntity.items.set(itemEntities);
     return orderEntity;
   }
 

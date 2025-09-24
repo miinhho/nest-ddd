@@ -19,7 +19,7 @@ export class OrderItemService {
     price: number;
   }): Promise<OrderItem> {
     const orderItem = OrderItem.create({ name, quantity, price });
-    this.orderItemRepository.save(orderItem);
+    await this.orderItemRepository.save(orderItem);
     return orderItem;
   }
 
@@ -29,7 +29,7 @@ export class OrderItemService {
   ): Promise<OrderItem> {
     const orderItem = await this.orderItemRepository.findById(id);
     const updatedOrderItem = orderItem.update(updates);
-    this.orderItemRepository.save(updatedOrderItem);
+    await this.orderItemRepository.save(updatedOrderItem);
     return updatedOrderItem;
   }
 

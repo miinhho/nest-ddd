@@ -14,9 +14,23 @@ export class MikroOrmOrderRepository implements OrderRepository {
     private readonly em: EntityManager,
   ) {}
 
-  save(order: Order): void {
+  async save(order: Order): Promise<void> {
+    const existing = await this.orderRepository.findOne(
+      { id: order.id },
+      { populate: ['items'] },
+    );
     const orderEntity = order.toEntity();
-    this.em.persist(orderEntity);
+
+    if (existing) {
+      existing.status = orderEntity.status;
+      existing.createdAt = orderEntity.createdAt;
+      existing.items.set(orderEntity.items.getItems());
+
+      await this.em.persistAndFlush(existing);
+      return;
+    }
+
+    await this.em.persistAndFlush(orderEntity);
   }
 
   async findById(id: string): Promise<Order> {
@@ -36,10 +50,13 @@ export class MikroOrmOrderRepository implements OrderRepository {
   }
 
   async delete(id: string): Promise<void> {
-    const orderEntity = await this.orderRepository.findOne({ id });
+    const orderEntity = await this.orderRepository.findOne(
+      { id },
+      { populate: ['items'] },
+    );
     if (!orderEntity) {
       throw new OrderNotFoundError(id);
     }
-    this.em.remove(orderEntity);
+    await this.em.removeAndFlush(orderEntity);
   }
 }

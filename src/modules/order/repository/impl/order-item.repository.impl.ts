@@ -14,9 +14,9 @@ export class MikroOrmOrderItemRepository implements OrderItemRepository {
     private readonly em: EntityManager,
   ) {}
 
-  save(orderItem: OrderItem): void {
+  async save(orderItem: OrderItem): Promise<void> {
     const orderItemEntity = orderItem.toEntity();
-    this.em.persist(orderItemEntity);
+    await this.em.persistAndFlush(orderItemEntity);
   }
 
   async findById(id: string): Promise<OrderItem> {
@@ -37,6 +37,6 @@ export class MikroOrmOrderItemRepository implements OrderItemRepository {
     if (!orderItemEntity) {
       throw new OrderItemNotFoundError(id);
     }
-    this.em.remove(orderItemEntity);
+    await this.em.removeAndFlush(orderItemEntity);
   }
 }

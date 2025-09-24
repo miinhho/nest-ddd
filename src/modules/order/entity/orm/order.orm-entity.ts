@@ -19,10 +19,12 @@ export class OrderEntity extends BaseOrmEntity implements DomainMapper {
   status: OrderStatus;
 
   toDomain(): Order {
+    const orderItems = this.items.getItems().map((ie) => ie.toDomain());
     return new Order({
       id: this.id,
       status: this.status,
       createdAt: this.createdAt,
+      items: orderItems,
     });
   }
 }

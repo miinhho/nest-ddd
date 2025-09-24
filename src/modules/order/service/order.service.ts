@@ -12,20 +12,20 @@ export class OrderService {
 
   async createOrder(items: OrderItem[]): Promise<Order> {
     const order = Order.create(items);
-    this.orderRepository.save(order);
+    await this.orderRepository.save(order);
     return order;
   }
 
   async payOrder(id: string): Promise<void> {
     const order = await this.orderRepository.findById(id);
     order.pay();
-    this.orderRepository.save(order);
+    await this.orderRepository.save(order);
   }
 
   async cancelOrder(id: string): Promise<void> {
     const order = await this.orderRepository.findById(id);
     order.cancel();
-    this.orderRepository.save(order);
+    await this.orderRepository.save(order);
   }
 
   async deleteOrder(id: string): Promise<void> {
