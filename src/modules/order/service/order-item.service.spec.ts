@@ -38,7 +38,8 @@ describe('OrderItemService', () => {
       const quantity = 2;
       const price = 10;
 
-      jest.spyOn(orderItemRepository, 'save').mockImplementation(() => {});
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      jest.spyOn(orderItemRepository, 'save').mockImplementation((() => {}) as any);
 
       const result = await service.createOrderItem({ name, quantity, price });
 
@@ -57,7 +58,8 @@ describe('OrderItemService', () => {
       const updates = { quantity: 3, price: 15 };
 
       jest.spyOn(orderItemRepository, 'findById').mockResolvedValue(existingItem);
-      jest.spyOn(orderItemRepository, 'save').mockImplementation(() => {});
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      jest.spyOn(orderItemRepository, 'save').mockImplementation((() => {}) as any);
 
       const result = await service.updateOrderItem(id, updates);
 

@@ -43,25 +43,6 @@ describe('OrderItemController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('create', () => {
-    it('should create an order item', async () => {
-      const body = {
-        name: 'Item 1',
-        quantity: 2,
-        price: 10,
-      };
-      const orderItem = OrderItem.create(body);
-
-      jest.spyOn(orderItemService, 'createOrderItem').mockResolvedValue(orderItem);
-
-      const result = await controller.create(body);
-
-      expect(result.id).toBe(orderItem.id);
-      expect(result.name).toBe(orderItem.name);
-      expect(orderItemService['createOrderItem']).toHaveBeenCalledWith(body);
-    });
-  });
-
   describe('findOne', () => {
     it('should return an order item', async () => {
       const id = 'item-1';

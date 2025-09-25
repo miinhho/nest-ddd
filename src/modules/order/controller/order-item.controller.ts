@@ -1,8 +1,4 @@
 import {
-  OrderItemCreateBodyDto,
-  OrderItemCreateResponseDto,
-} from '@/modules/order/dto/order-item.create.dto';
-import {
   OrderItemFindAllResponseDto,
   OrderItemFindOneResponseDto,
 } from '@/modules/order/dto/order-item.find.dto';
@@ -21,7 +17,6 @@ import {
   HttpStatus,
   Inject,
   Param,
-  Post,
   Put,
 } from '@nestjs/common';
 
@@ -32,21 +27,6 @@ export class OrderItemController {
     private readonly orderItemRepository: OrderItemRepository,
     private readonly orderItemService: OrderItemService,
   ) {}
-
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  async create(
-    @Body() body: OrderItemCreateBodyDto,
-  ): Promise<OrderItemCreateResponseDto> {
-    const orderItem = await this.orderItemService.createOrderItem(body);
-    return {
-      id: orderItem.id,
-      name: orderItem.name,
-      quantity: orderItem.quantity,
-      price: orderItem.price,
-      createdAt: orderItem.createdAt,
-    };
-  }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)

@@ -40,7 +40,8 @@ describe('OrderService', () => {
         OrderItem.create({ name: 'Item 2', quantity: 1, price: 20 }),
       ];
 
-      jest.spyOn(orderRepository, 'save').mockImplementation(() => {});
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      jest.spyOn(orderRepository, 'save').mockImplementation((() => {}) as any);
 
       const result = await service.createOrder(items);
 
@@ -58,7 +59,8 @@ describe('OrderService', () => {
       ]);
 
       jest.spyOn(orderRepository, 'findById').mockResolvedValue(order);
-      jest.spyOn(orderRepository, 'save').mockImplementation(() => {});
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      jest.spyOn(orderRepository, 'save').mockImplementation((() => {}) as any);
 
       await service.payOrder(orderId);
 
@@ -76,7 +78,8 @@ describe('OrderService', () => {
       ]);
 
       jest.spyOn(orderRepository, 'findById').mockResolvedValue(order);
-      jest.spyOn(orderRepository, 'save').mockImplementation(() => {});
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      jest.spyOn(orderRepository, 'save').mockImplementation((() => {}) as any);
 
       await service.cancelOrder(orderId);
 

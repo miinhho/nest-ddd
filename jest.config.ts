@@ -12,6 +12,7 @@ const config: Config = {
     '!modules/**/*.dto.ts',
     '!modules/**/*.orm-entity.ts',
     '!modules/**/*.module.ts',
+    '!modules/**/*.error.ts',
   ],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
